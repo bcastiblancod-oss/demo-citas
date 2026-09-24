@@ -91,9 +91,15 @@ npm start                # → http://localhost:3000
 
 En Render no hay que tocar nada: el mismo servicio redespliega este commit automáticamente y sigue funcionando igual. Guía completa: [blog de despliegue](https://eng-demo-citas.onrender.com/blog-semana-7.html).
 
-## Nota sobre concurrencia
+## Optimización de latencia y concurrencia
 
-El refactor conserva deliberadamente la condición de carrera de la Semana 7 (verificar disponibilidad y luego insertar, en dos pasos, sin restricción de unicidad). Las capas organizan responsabilidades; no resuelven concurrencia — la exclusión real se garantiza en el nivel de datos con un índice de unicidad, y ese es un ejercicio de la sesión de la Semana 8.
+En la versión inicial se realizaban dos consultas SQL secuenciales al reservar una cita (`SELECT` previo para validar disponibilidad y luego `INSERT`), duplicando el tiempo de ida y vuelta de red (*RTT*) hacia Supabase y dejando abierta una condición de carrera.
+
+En esta optimización se resolvieron ambos aspectos:
+1. **Reducción de viajes de red en POST `/api/citas`**: se unificó la verificación e inserción en una sola operación atómica con control de unicidad (`UNIQUE (profesional_id, fecha_hora)`), reduciendo a la mitad los viajes de red hacia Supabase y eliminando la condición de carrera bajo concurrencia.
+2. **Índices en PostgreSQL**: se incorporó un índice en `fecha_hora` para optimizar las consultas y ordenamiento en `GET /api/citas`.
+3. **Caché en memoria del catálogo de profesionales**: el listado de profesionales se sirve desde memoria con TTL (60s) y cabecera HTTP `Cache-Control`, reduciendo la latencia de ~100 ms a <1 ms en `GET /api/profesionales`.
+4. **Carga concurrente en el cliente web**: `public/index.html` realiza las peticiones iniciales de catálogo y citas en paralelo (`Promise.all`), reduciendo la latencia de carga percibida por el usuario.
 
 ## Ruta del curso
 

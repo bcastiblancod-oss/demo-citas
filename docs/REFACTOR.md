@@ -91,7 +91,7 @@ Equivalente a la tabla de la Semana 7, para que cada semana deje una evidencia c
 | Infraestructura | PostgreSQL en Supabase (y la plataforma Render) — externa al código |
 | El contrato de cada capa | Los `module.exports` de cada archivo |
 
-**Nota honesta sobre concurrencia:** el refactor conserva la misma condición de carrera de la Semana 7 (verificar disponibilidad y luego insertar, en dos pasos). Es deliberado: las capas organizan responsabilidades, no resuelven concurrencia — la exclusión real se garantiza en el nivel de datos con un índice de unicidad, y ese es un ejercicio de la sesión.
+**Nota sobre concurrencia y latencia:** en esta versión optimizada, se resolvió la condición de carrera y se redujo la latencia del `POST /api/citas` unificando la verificación e inserción en una sola consulta atómica con restricción `UNIQUE (profesional_id, fecha_hora)` en la base de datos (pasando de 2 viajes de red a solo 1 hacia Supabase).
 
 ## Mapa a las diapositivas de la Semana 8
 

@@ -154,8 +154,7 @@ if (respuesta.ok) {
     const s = await r.json();
     estado.textContent = "Servidor activo · respuesta recibida a las " +
       new Date(s.hora).toLocaleTimeString("es-CO");
-    await cargarProfesionales();
-    await cargarCitas();
+    await Promise.all([cargarProfesionales(), cargarCitas()]);
   } catch (e) {
     // Si el servidor está caído, el cliente no sirve para nada ("todo o nada").
     estado.textContent = "No hay conexión con el servidor. Sin él, este cliente no puede hacer nada.";

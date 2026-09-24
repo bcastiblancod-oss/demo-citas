@@ -29,6 +29,7 @@ router.get('/citas', async (req, res) => {
 
 router.get('/profesionales', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60');
     res.json(await citaService.consultarProfesionales());
   } catch (error) {
     console.error('Error consultando profesionales:', error.message);

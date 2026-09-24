@@ -26,8 +26,12 @@ CREATE TABLE citas (
   paciente        TEXT NOT NULL,
   profesional_id  INTEGER NOT NULL REFERENCES profesionales(id),
   fecha_hora      TIMESTAMPTZ NOT NULL,
-  creada_en       TIMESTAMPTZ NOT NULL DEFAULT now()
+  creada_en       TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT uq_citas_profesional_fecha UNIQUE (profesional_id, fecha_hora)
 );
+
+-- Índice para optimizar ordenamiento y consultas por fecha
+CREATE INDEX IF NOT EXISTS idx_citas_fecha_hora ON citas (fecha_hora);
 
 -- Datos semilla: para que la demo no empiece vacía
 INSERT INTO profesionales (nombre, especialidad) VALUES

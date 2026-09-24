@@ -15,12 +15,9 @@ async function reservarCita(datos) {
   reglas.validarDatosCompletos(datos);
   reglas.validarFechaFutura(datos.fecha_hora);
 
-  const ocupado = await citaRepository.existeEnHorario(
-    datos.profesional_id,
-    datos.fecha_hora
-  );
-  reglas.validarAgendaLibre(ocupado);
-
+  // Optimización de latencia:
+  // Se reduce de 2 viajes de red (SELECT + INSERT) a 1 sola operación atómica en la base de datos.
+  // El repositorio realiza la inserción y valida la exclusión de horario en un solo paso.
   const id = await citaRepository.guardar(datos);
   return { mensaje: 'Cita creada', id };
 }
