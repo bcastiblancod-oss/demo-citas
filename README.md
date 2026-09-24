@@ -9,9 +9,10 @@ Sistema de referencia del curso **Arquitectura de Sistemas I** · Universidad Ce
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
 [![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7?logo=render&logoColor=white)](https://render.com)
 
-**[🌐 Demo en vivo](https://eng-demo-citas.onrender.com)** ·
-**[📖 Guía de despliegue](https://eng-demo-citas.onrender.com/blog-semana-7.html)** ·
-**[🔬 Detalle del refactor](docs/REFACTOR.md)**
+**[🌐 Demo en vivo](https://demo-citas-cvtk.onrender.com)** ·
+**[📖 Guía de despliegue](https://demo-citas-cvtk.onrender.com/blog-semana-7.html)** ·
+**[🔬 Detalle del refactor](docs/REFACTOR.md)** ·
+**[📊 Pruebas de latencia](docs/PRUEBAS_LATENCIA.md)**
 
 </div>
 
